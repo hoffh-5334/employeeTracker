@@ -189,12 +189,12 @@ function addEmployee() {
           name: "role_id",
           choices: roleList
         },
-        {
-          type: "list",
-          message: "Who is the  manager for the new employee?",
-          name: "manager",
-          choices: employeeList
-        }
+        // {
+        //   type: "list",
+        //   message: "Who is the  manager for the new employee?",
+        //   name: "manager",
+        //   choices: employeeList
+        // }
       ])
         .then(db.addEmployee)
         .then(([rows]) => {

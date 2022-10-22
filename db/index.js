@@ -1,20 +1,18 @@
-const connection = require("../config/connection");
+const connection = require("./connection");
 
 class DB {
   // Keeping a reference to the connection on the class in case we need it later
   constructor(connection) {
-    this.connection = connection;   
+    this.connection = connection;   // here we reach out to the db so we can do a query
   }
 
  findAllDepts(){
   return this.connection.promise().query("SELECT * FROM department;");
  } 
 
- addDept(res) {
-  return this.connection.promise().query(
-    "INSERT INTO department (name) VALUES (?);", [res.department]
-  );
-}
+ addDept(deptName) {
+  return this.connection.promise().query("INSERT INTO department(name) VALUES(?)", deptName)};
+
   
 findAllEmployees() {
   return this.connection.promise().query(
@@ -26,19 +24,24 @@ findAllEmployees() {
   );
 }
 
-updateEmployee(res){
+addEmployee(fName, lName, role, manager) {
+  return this.connection.promise().query("INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES(?, ?, ?, ?)", [fName, lName, role, manager])};
+
+updateEmployee(employee, role) {
+  return this.connection.promise().query("UPDATE employee SET role_id = ? WHERE id = ?", [role, employee])
+};
+
+findAllRoles() {
   return this.connection.promise().query(
-    "UPDATE employee SET title = (?) WHERE title = (?);" [res.employee, res.title, res.role_id]
-  )
+    `SELECT role.id, role.title, role.salary, department.name AS department_name
+    FROM department
+    INNER JOIN role on role.department_id=department.id;`
+  );
 }
 
-findAllRoles(){
-  return this.connection.promise().query("SELECT * FROM role;");
-}
+addRole(title, salary, deptID) {
+  return this.connection.promise().query("INSERT INTO role(title, salary, department_id) VALUES(?, ?, ?)", [title, salary, deptID])};
 
-addRole(title, salary, depID) {
-  return this.connection.promise().query("INSERT INTO role(title, salary, department_id) VALUES(?, ?, ?)", [title, salary, depID])};
-  
 getManagers() {
   return this.connection.promise().query(
   `SELECT concat(e.first_name, " ", e.last_name) AS name, e.id AS value
@@ -46,6 +49,12 @@ getManagers() {
   LEFT JOIN employee e2 ON e2.id = e.manager_id 
   WHERE e.manager_id  IS NULL`
   )
+}
+
+getEmployees() {
+  return this.connection.promise().query(
+    `SELECT employee.id AS value, CONCAT(employee.first_name, " ", employee.last_name) AS name FROM employee`
+  );
 }
 
 close() {
