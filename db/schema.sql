@@ -30,7 +30,7 @@ CREATE TABLE employee (
   -- references the id column of the role table, and performs a cascade delete when needed --
 
   -- constraint goes here --
-  CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+  CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE,
   manager_id INT UNSIGNED,
   INDEX man_ind (manager_id),
 

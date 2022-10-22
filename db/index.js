@@ -1,13 +1,9 @@
-const connection = require("./connection");
+const connection = require("../config/connection");
 
 class DB {
   // Keeping a reference to the connection on the class in case we need it later
   constructor(connection) {
-    this.connection = connection;   // here we reach out to the db so we can do a query
-    this.addDept = this.addDept.bind(this)
-    this.addEmployee = this.addEmployee.bind(this)
-    this.updateEmployee = this.updateEmployee.bind(this)
-    this.addRole = this.addRole.bind(this)
+    this.connection = connection;   
   }
 
  findAllDepts(){
@@ -22,7 +18,11 @@ class DB {
   
 findAllEmployees() {
   return this.connection.promise().query(
-    "SELECT e.id as ID, concat(e.first_name, ' ', e.last_name) AS Name e.manager_id AS Manager, r.title AS Role r.salary AS Salary, d.name as Department FROM employee e INNER JOIN role r ON r.id=role_id INNER JOIN department d ON d.id=department_id;"
+    `SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name AS department, CONCAT(manager.first_name, " ", manager.last_name) AS manager
+    FROM employee
+    LEFT JOIN role ON role.id=employee.role_id
+    LEFT JOIN department ON department.id=role.department_id
+    LEFT JOIN employee manager ON manager.id=employee.manager_id`
   );
 }
 
@@ -36,12 +36,21 @@ findAllRoles(){
   return this.connection.promise().query("SELECT * FROM role;");
 }
 
-addRole(res) {
+addRole(title, salary, depID) {
+  return this.connection.promise().query("INSERT INTO role(title, salary, department_id) VALUES(?, ?, ?)", [title, salary, depID])};
+  
+getManagers() {
   return this.connection.promise().query(
-    "INSERT INTO role (title, salary, department_id) VALUES (?,?,?);", [res.title, res.salary, res.department_id]
-  );
-} 
-
+  `SELECT concat(e.first_name, " ", e.last_name) AS name, e.id AS value
+  FROM employee e
+  LEFT JOIN employee e2 ON e2.id = e.manager_id 
+  WHERE e.manager_id  IS NULL`
+  )
 }
+
+close() {
+  this.connection.end();
+};
+};
 
 module.exports = new DB(connection);
