@@ -31,8 +31,8 @@ findAllEmployees() {
 addEmployee(res) {
   return this.connection.promise().query("INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES(?, ?, ?, ?)", [res.first_name, res.last_name, res.role_id, res.manager])};
 
-updateEmployee(employee, role) {
-  return this.connection.promise().query("UPDATE employee SET role_id = ? WHERE id = ?", [role, employee])
+updateEmployee(res) {
+  return this.connection.promise().query("UPDATE employee SET role_id = ? WHERE id = ?", [res.employee, res.role_id])
 };
 
 findAllRoles() {
