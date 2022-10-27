@@ -126,7 +126,7 @@ function addDept() {
       name: "department"
     }
   ])
-    .then(db.addDepartment)
+    .then(db.addDept)
     .then(([rows]) => {
       let departments = rows;
       console.log("\n");
@@ -189,12 +189,11 @@ function addEmployee() {
           name: "role_id",
           choices: roleList
         },
-        // {
-        //   type: "list",
-        //   message: "Who is the  manager for the new employee?",
-        //   name: "manager",
-        //   choices: employeeList
-        // }
+        {
+          type: "input",
+          message: "What is the manager's id?",
+          name: "manager"
+        }
       ])
         .then(db.addEmployee)
         .then(([rows]) => {

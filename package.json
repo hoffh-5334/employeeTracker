@@ -4,7 +4,7 @@
     "console.table": "^0.10.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "inquirer": "^8.2.4",
+    "inquirer": "^8.2.5",
     "mysql2": "^2.3.3",
     "node": "^19.0.0",
     "nodemon": "^2.0.20"
@@ -13,7 +13,7 @@
     "start": "node server.js"
   },
   "name": "employeetracker",
-  "description": "",
+  "description": "Developers frequently have to create interfaces that allow non-developers to easily view and interact with information stored in databases. These interfaces are called content management systems (CMS). \r This is was a challenge to build a command-line application to manage an employee database, using Node.js, Inquirer, and MySQL.",
   "version": "1.0.0",
   "main": "server.js",
   "repository": {
@@ -26,5 +26,6 @@
   "bugs": {
     "url": "https://github.com/hoffh-5334/employeeTracker/issues"
   },
-  "homepage": "https://github.com/hoffh-5334/employeeTracker#readme"
+  "homepage": "https://github.com/hoffh-5334/employeeTracker#readme",
+  "devDependencies": {}
 }
